@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({
 app.use(config.CorssConfig);
 
 // ExpressOIDC will attach handlers for the /login and /authorization-code/callback routes
-app.use(session(oAuthConfig.sessionConfig));
+// app.use(session(oAuthConfig.sessionConfig));
 // app.use(oAuthConfig.oidc.router);
 // app.get('/', (req, res) => {
 //   if (req.userinfo) {
@@ -53,7 +53,6 @@ app.use(session(oAuthConfig.sessionConfig));
 app.use("/api", router);
 
 app.use(function(req, res, next) {
-
     res.status(404).send({
         message: "No HTTP resource was found that matches the request URI",
         endpoint: req.url,
@@ -62,6 +61,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(function(err, req, res, next) {
+    console.log(err);
     res.status(500).json(err);
 });
 
