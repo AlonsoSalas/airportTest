@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Flights = sequelize.define('Flights', {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
+    id: { type: DataTypes.INTEGER, primaryKey: true, allowNull: false },
     id_aircraft: DataTypes.INTEGER,
     departure_airport_id: DataTypes.INTEGER,
     arrival_airport_id: DataTypes.INTEGER,
