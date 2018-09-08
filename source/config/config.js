@@ -1,24 +1,27 @@
-import dotenv from 'dotenv';
-
-/*Loading envioroment vars from .env file,  this file is not available in the repository,
-so if you need to test this app in localhost you must create your own*/
+const dotenv = require('dotenv');
 
 dotenv.config();
 
-const CorssConfig = (req, res, next) => {
-
-    res.header('Access-Control-Allow-Origin','*');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-    // res.header('Access-Control-Expose-Headers', 'Content-Length');
-    res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range, Origin');
-
-    if (req.method === 'OPTIONS') return res.sendStatus(200);
-
-    return next();
-
-};
-
-export default {
-    CorssConfig
-};
+module.exports = {
+  "development": {
+    "username": process.env.DB_USERNAME || 'root',
+    "password": process.env.DB_PASSWORD || 'root',
+    "database": process.env.DB_DATABASE || 'airport_new',
+    "host": process.env.DB_HOST || '127.0.0.1',
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
