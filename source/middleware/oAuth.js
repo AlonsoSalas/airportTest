@@ -19,7 +19,7 @@ const oktaJwtVerifier = new OktaJwtVerifier({
  */
 
 const isAuthenticated = async (req, res, next) => {
-  console.log(req.headers.authorization);
+  // console.log(req.headers.authorization);
   const authHeader = req.headers.authorization || '';
   const match = authHeader.match(/Bearer (.+)/);
 
@@ -40,6 +40,7 @@ const isAuthenticated = async (req, res, next) => {
           'Rol'
         ]
       });
+      // console.log('rol', req.user[0].dataValues.Rol.dataValues.name);
       next();
     })
     .catch((err) => {

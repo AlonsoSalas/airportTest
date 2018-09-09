@@ -8,9 +8,7 @@ const router = Router();
 router
   .get('/', BookingController.getBookings)
   .post('/create', BookingController.createBooking)
-  .get('', BookingController.getBookingsByDate)
-  .get('/id', BookingController.getBookingById)
-  .get('/user', BookingController.getBookingByUser)
+  .post('/getTicket', BookingController.getTicket)
   .post('/cancel', BookingController.cancelBooking)
 
 export default router;
