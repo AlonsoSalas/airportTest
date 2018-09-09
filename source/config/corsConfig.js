@@ -9,7 +9,6 @@ const CorssConfig = (req, res, next) => {
   if (req.method === 'OPTIONS') return res.sendStatus(200);
 
   return next();
-
 };
 
 module.exports = {
