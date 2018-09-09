@@ -1,13 +1,21 @@
+import models from '../models';
+import ErrorHandler from '../handler/ErrorHandler';
+const Bookings = models.Bookings;
+
 class BookingsController {
 
-  getBookings(req, res, next) {
-    // do not show flight if now + 1hr < flight.departure_date 
-    // show if i have booked this flight
-    console.log(req.user);
-
-    
-
-    res.status(200).json('getAllBookings');
+  async getBookings(req, res, next) {
+    const user = req.user[0].dataValues;
+    try {
+      const bookings = await Bookings.findAll({
+        where: {
+          user_id : user.id
+        }
+      })
+      res.status(200).json(bookings);
+    } catch (error) {
+      ErrorHandler(error, res, req, next);
+    }
   }
 
   getBookingsByDate(req, res, next) {
@@ -46,6 +54,10 @@ class BookingsController {
     res.status(200).json(req.body);
   }
 }
+
+const isAdmin = (user) => {
+  
+};
 
 const bookingsController = new BookingsController();
 
