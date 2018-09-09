@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     IATA: DataTypes.STRING
   }, {});
-  Airports.associate = function(models) {
+  Airports.associate = function (models) {
     // associations can be defined here
   };
   return Airports;

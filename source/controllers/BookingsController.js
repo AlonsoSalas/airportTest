@@ -25,9 +25,9 @@ class BookingsController {
   }
 
   createBooking(req, res, next) {
-    
+
     //reglas para todos los usuarios
-    
+
 
     //reglas regular user
     // 1. now + 24hrs < flight.departure_date

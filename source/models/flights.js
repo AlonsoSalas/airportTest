@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     stock: DataTypes.INTEGER,
     price: DataTypes.FLOAT
   }, {});
-  Flights.associate = function(models) {
+  Flights.associate = function (models) {
     // associations can be defined here
   };
   return Flights;

@@ -28,9 +28,9 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-      const aircraftsIds = aircrafts.map(aircraft => aircraft.id);
-      return queryInterface.bulkDelete('Aircrafts', [{
-        id: aircraftsIds
-      }]);
+    const aircraftsIds = aircrafts.map(aircraft => aircraft.id);
+    return queryInterface.bulkDelete('Aircrafts', [{
+      id: aircraftsIds
+    }]);
   }
 };

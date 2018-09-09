@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     id: { type: DataTypes.INTEGER, primaryKey: true, allowNull: false },
     matriculation: DataTypes.STRING
   }, {});
-  Aircrafts.associate = function(models) {
+  Aircrafts.associate = function (models) {
     // associations can be defined here
   };
   return Aircrafts;

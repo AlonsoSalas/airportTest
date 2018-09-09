@@ -1,7 +1,7 @@
 import RequestPromise from 'request-promise-native';
 
 const defaultOptions = {
-  resolveWithFullResponse: true, 
+  resolveWithFullResponse: true,
   json: true,
 };
 
@@ -16,17 +16,7 @@ async function startRequest(opts) {
     const response = await RequestPromise(opts);
     return response;
   } catch (err) {
-      throw err;
-    //   console.log(err);
-    // if (!err.response) throw err;
-    // const { body: { error }, statusCode: status } = err.response;
-    // if (error && error.code && error.message && status) {
-    //   const { code, message } = error;
-    //   const description = 'An error has occurred in SB services.';
-    //   throw new CanoError(message, { code, description, status });
-    // } else {
-    //   throw err;
-    // }
+    throw err;
   }
 }
 

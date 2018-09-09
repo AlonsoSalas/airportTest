@@ -2,6 +2,13 @@ const ErrorHandler = (err, res, req, next) => {
 
   switch (err.name) {
 
+    case 'StatusCodeError':
+      res.status(err.statusCode);
+      res.json({
+        message: 'TThe credentials provided were invalid.'
+      });
+      break;
+
     case 'CustomError':
       res.status(err.statusCode);
       delete err.statusCode;
