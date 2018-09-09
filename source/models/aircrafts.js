@@ -5,7 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     matriculation: DataTypes.STRING
   }, {});
   Aircrafts.associate = function (models) {
-    // associations can be defined here
+    Aircrafts.hasMany(models.Flights, {
+      foreignKey: 'id_aircraft'
+    });
   };
   return Aircrafts;
 };

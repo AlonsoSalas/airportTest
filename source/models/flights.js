@@ -9,9 +9,14 @@ module.exports = (sequelize, DataTypes) => {
     arrival_date: DataTypes.DATE,
     stock: DataTypes.INTEGER,
     price: DataTypes.FLOAT
-  }, {});
+  });
   Flights.associate = function (models) {
-    // associations can be defined here
+    Flights.belongsTo(models.Aircrafts, {
+      foreignKey: 'id_aircraft'
+    });
+    Flights.hasMany(models.Bookings, {
+      foreignKey: 'flight_id'
+    });
   };
   return Flights;
 };

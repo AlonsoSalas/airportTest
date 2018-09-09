@@ -5,7 +5,6 @@ import flightRouter from './FlightsRouter';
 import bookingRouter from './BookingsRouter';
 
 const router = Router();
-// console.log(flightRouter);
 
 router
   .use('/auth', oauthRouter)

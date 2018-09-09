@@ -1,5 +1,7 @@
 import OktaJwtVerifier from '@okta/jwt-verifier';
 const dotenv = require('dotenv');
+import models from '../models';
+const Users = models.Users;
 
 dotenv.config();
 
@@ -16,7 +18,8 @@ const oktaJwtVerifier = new OktaJwtVerifier({
  * contents are attached to req.jwt
  */
 
-const isAuthenticated = (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
+  console.log(req.headers.authorization);
   const authHeader = req.headers.authorization || '';
   const match = authHeader.match(/Bearer (.+)/);
 
@@ -28,8 +31,15 @@ const isAuthenticated = (req, res, next) => {
   const accessToken = match[1];
 
   return oktaJwtVerifier.verifyAccessToken(accessToken)
-    .then((jwt) => {
+    .then(async (jwt) => {
       req.jwt = jwt;
+      req.user = await Users.findAll({
+        where: {
+          email: jwt.claims.sub
+        }, include: [
+          'Rol'
+        ]
+      });
       next();
     })
     .catch((err) => {

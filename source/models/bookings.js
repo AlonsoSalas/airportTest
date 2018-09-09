@@ -5,11 +5,14 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER,
     flight_id: DataTypes.INTEGER,
     date: DataTypes.DATE,
-    active: DataTypes.BOOLEAN,
-    tickets_quantity: DataTypes.INTEGER
-  }, {});
+    active: DataTypes.BOOLEAN
+  },{});
   Bookings.associate = function (models) {
-    // associations can be defined here
+    Bookings.belongsTo(models.Flights, {
+      foreignKey: 'flight_id'
+    });
   };
+
+
   return Bookings;
 };

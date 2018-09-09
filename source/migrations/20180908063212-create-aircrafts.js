@@ -21,11 +21,7 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
-    },
-      {
-        timestamps: true,
-        paranoid: true,
-      });
+    });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Aircrafts');

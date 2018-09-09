@@ -4,10 +4,14 @@ module.exports = (sequelize, DataTypes) => {
     id: { type: DataTypes.INTEGER, primaryKey: true, allowNull: false },
     rut: DataTypes.STRING,
     name: DataTypes.STRING,
-    type_id: DataTypes.INTEGER
+    type_id: DataTypes.INTEGER,
+    email: DataTypes.STRING
   }, {});
   Users.associate = function (models) {
-    // associations can be defined here
+    Users.belongsTo(models.UserTypes, {
+      foreignKey: 'type_id',
+      as: 'Rol'
+    });
   };
   return Users;
-};
+}; 
