@@ -6,8 +6,6 @@ Airport test using
 - ORM: Sequelize (Permite utilizar una variedad de DB relacionales, elegir la que más te acomode). [http://docs.sequelizejs.com/]
 - Autenticación: Okta [https://developer.okta.com]
 
-This creates cucumber test using LineExecution application used in - https://test.lme.maintenix.aero/
-
 ## Getting Started
 
 ### Clone Repository 
