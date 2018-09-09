@@ -21,12 +21,49 @@ class BookingsController {
     }
   }
 
-  cancelBooking(req, res, next) {
+  async cancelBooking(req, res, next) {
+    const user = req.user[0].dataValues;
+    const bookingData = req.body;
 
+    if (!bookingData.booking_id) return res.status(400).send({ message: 'Bad Request' });
 
-    // solo el usuario admin puede cancelar
-    // Si una reserva es cancelada, el asiento debe quedar nuevamente disponible para reservaciones.
-    res.status(200).json('cancelBooking');
+    const allowedBookingTime = moment().utc().add(1, 'minutes');
+
+    if (isAdmin(user)) {
+      const booking = await Bookings.findOne({
+        where: {
+          id: bookingData.booking_id,
+          retired: false
+        },
+        include: [{
+          model: Flights,
+          where: {
+            departure_date: {
+              $gt: allowedBookingTime
+            }
+          }
+        }]
+      })
+
+      if (!booking) return res.status(200).send({ message: 'Booking not found' });
+
+      if (!booking.active) return res.status(200).send({ message: 'Ticket was already canceled' });
+
+      if (booking.Flight.departure_date > allowedBookingTime) {
+        try {
+          booking.updateAttributes({
+            active: false
+          }).then((bookingUpdated) => {
+            booking.Flight.updateAttributes({
+              stock: booking.Flight.stock + 1
+            });
+            return res.status(202).send(bookingUpdated);
+          })
+        } catch (error) {
+          ErrorHandler(error, res, req, next);
+        }
+      }
+    }
   }
 
   async getTicket(req, res, next) {
@@ -41,10 +78,15 @@ class BookingsController {
 
     const booking = await Bookings.findOne({
       where: {
-        id: bookingData.booking_id,
+        id: bookingData.booking_id
       },
       include: [{
-        model: Flights
+        model: Flights,
+        where: {
+          departure_date: {
+            $gt: allowedBookingTime
+          }
+        }
       }]
     })
 
@@ -61,8 +103,6 @@ class BookingsController {
         ErrorHandler(error, res, req, next);
       }
     }
-
-    res.status(200).json(booking);
   }
 
   async createBooking(req, res, next) {
