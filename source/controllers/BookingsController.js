@@ -1,6 +1,8 @@
 import models from '../models';
 import ErrorHandler from '../handler/ErrorHandler';
+import moment from 'moment';
 const Bookings = models.Bookings;
+const Flights = models.Flights;
 
 class BookingsController {
 
@@ -9,25 +11,13 @@ class BookingsController {
     try {
       const bookings = await Bookings.findAll({
         where: {
-          user_id : user.id
+          user_id: user.id
         }
       })
       res.status(200).json(bookings);
     } catch (error) {
       ErrorHandler(error, res, req, next);
     }
-  }
-
-  getBookingsByDate(req, res, next) {
-    res.status(200).json('getBookingsByDate');
-  }
-
-  getBookingById(req, res, next) {
-    res.status(200).json('getBookingById');
-  }
-
-  getBookingByUser(req, res, next) {
-    res.status(200).json('getBookingByUser');
   }
 
   cancelBooking(req, res, next) {
@@ -39,24 +29,54 @@ class BookingsController {
     res.status(200).json('cancelBooking');
   }
 
-  createBooking(req, res, next) {
+  async createBooking(req, res, next) {
+    const user = req.user[0].dataValues;
+    const bookingData = req.body;
 
-    
+    if (!bookingData.flight_id) return res.status(400).send({ message: 'Bad Request' });
 
-    // regular users
-    // if now+1hr < flight.departure_date
+    const allowedBookingTime = isAdmin(user)
+      ? moment().utc().add(1, 'minutes').format('YYYY/MM/DD HH:mm:ss')
+      : moment().utc().add(1, 'hours').format('YYYY/MM/DD HH:mm:ss')
 
-    // admin users
-    // if now+1min < flight.departure_date
+    const flight = await Flights.findAll({
+      where: {
+        departure_date: {
+          $gt: allowedBookingTime
+        },
+        id: bookingData.flight_id
+      }
+    })
 
+    if (!flight.length) return res.status(200).send({ message: 'Flight not found' });
 
-    // console.log(req.body);
-    res.status(200).json(req.body);
+    Bookings
+      .create({
+        user_id: user.id,
+        flight_id: bookingData.flight_id,
+        date: new Date(),
+        active: true
+      })
+      .then(newBooking => {
+        Flights.findOne({
+          id: newBooking.flight_id
+        })
+          .then(flight => {
+            flight.updateAttributes({
+              stock: flight.stock - 1
+            })
+          });
+
+        res.status(202).send(newBooking);
+      })
+      .catch(error => {
+        ErrorHandler(error, res, req, next);
+      })
   }
 }
 
 const isAdmin = (user) => {
-  
+  return user.Rol.dataValues.name === 'admin';
 };
 
 const bookingsController = new BookingsController();

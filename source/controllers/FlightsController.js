@@ -1,6 +1,8 @@
 import models from '../models';
 import ErrorHandler from '../handler/ErrorHandler';
+import moment from 'moment';
 const Flights = models.Flights;
+const FlightTickets = models.FlightTickets;
 
 class FlightsController {
 
@@ -11,7 +13,7 @@ class FlightsController {
       const flights = await Flights.findAll({
         where: {
           departure_date: {
-            $gt: new Date().addHours(1)
+            $gt: moment().utc().add(1, 'hours').format('YYYY/MM/DD HH:mm:ss')
           }
         }
       })
@@ -53,10 +55,5 @@ class FlightsController {
 }
 
 const flightsController = new FlightsController();
-
-Date.prototype.addHours = function(h){
-  this.setHours(this.getHours()+h);
-  return this;
-}
 
 export default flightsController;

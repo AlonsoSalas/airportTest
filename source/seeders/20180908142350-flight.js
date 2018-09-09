@@ -1,11 +1,9 @@
 'use strict';
+const moment = require('moment');
 
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-const afterTomorrow = new Date();
-afterTomorrow.setDate(afterTomorrow.getDate() + 2);
-const twoDaysAfterTomorrow = new Date();
-twoDaysAfterTomorrow.setDate(twoDaysAfterTomorrow.getDate() + 3);
+const tomorrow = moment().utc().add(1, 'days').format('YYYY/MM/DD HH:mm:ss')
+const afterTomorrow = moment().utc().add(2, 'days').format('YYYY/MM/DD HH:mm:ss')
+const twoDaysAfterTomorrow = moment().utc().add(3, 'days').format('YYYY/MM/DD HH:mm:ss')
 
 const flights = [
   {
